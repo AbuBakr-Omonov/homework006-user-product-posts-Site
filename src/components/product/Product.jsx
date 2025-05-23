@@ -1,13 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa'
+import SkeletonProduct from '../skeletonProduct/SkeletonProduct'
 
 const Product = () => {
-
+  const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null)
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("https://dummyjson.com/products")
       .then(pro => {
@@ -16,7 +18,9 @@ const Product = () => {
       .catch((err) => {
         setError(err);
       })
-      .finally()
+      .finally(()=> {
+        setLoading(false);
+      })
   }, [])
 
   console.log(product);
@@ -65,6 +69,7 @@ const Product = () => {
           </div>
         ))}
       </div>
+      {loading ? <SkeletonProduct count={30}/> : null}
     </div>
   )
 }
